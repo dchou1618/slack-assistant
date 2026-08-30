@@ -20,5 +20,7 @@ class Settings:
         "mistral-small3.1",
     )
 
+    log_level: str = os.getenv("LOG_LEVEL", "INFO")
+
 
 settings = Settings()

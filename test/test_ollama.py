@@ -21,6 +21,22 @@ def test_generate_sends_question_and_context(monkeypatch):
     assert calls["keep_alive"] == -1
 
 
+def test_generate_logs_inference_lifecycle(monkeypatch, caplog):
+    class FakeClient:
+        def chat(self, **kwargs):
+            return {"message": {"content": "answer"}}
+
+    monkeypatch.setattr(ollama_module.ollama, "Client", lambda host: FakeClient())
+
+    with caplog.at_level("INFO", logger=ollama_module.logger.name):
+        ollama_module.OllamaClient().generate("private question", "private context")
+
+    assert "Starting Ollama inference" in caplog.text
+    assert "Finished Ollama inference" in caplog.text
+    assert "private question" not in caplog.text
+    assert "private context" not in caplog.text
+
+
 def test_generate_omits_empty_context(monkeypatch):
     class FakeClient:
         def chat(self, **kwargs):
