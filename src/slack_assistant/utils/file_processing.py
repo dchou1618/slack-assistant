@@ -2,6 +2,7 @@ import os
 import requests
 
 def process_files(event, say) -> str:
+    extracted_text = ""
     for file in event.get("files", []):
         file_name = file.get("name")
         file_url = file.get("url_private")
