@@ -53,7 +53,7 @@ jobs:
           path: /tmp
       - name: Load Docker image
         run: docker load --input /tmp/slack-assistant-image.tar
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
